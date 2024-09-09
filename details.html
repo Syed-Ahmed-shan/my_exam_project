@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Navigation Bar with Options</title>
+    <link rel="stylesheet" href="details.css">
+</head>
+<body>
+    <div class="container">
+        <header class="top-bar">
+            <h1>Online Exam Center</h1>
+        </header>
+        
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS732yT2WKYY0j824Vk4CB55pV_-yqDnnYTHA&s" alt="Logo"> <!-- Replace with your logo image -->
+                <h1>VISWAM</h1>
+            </div>
+            <ul>
+                <li><a href="#courses">Courses</a></li>
+                <li><a href="#places">Places</a></li>
+                <li><a href="#year">Year</a></li>
+            </ul>
+        </nav>
+      
+
+        <!-- Main Content -->
+        <main class="main-content">
+           
+            <div class="form-container">
+                <h2>Select Options</h2>
+                <form  id="optionsForm" action="/submit" method="post">
+                    <label for="course">Choose a Course:</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select a course</option>
+                        <option value="software engineering">Software Engineering</option>
+                        <option value="aiml">AIML</option>
+                        <option value="mmd">MMD</option>
+                        <option value="ann">ANN</option>
+                    </select>
+                    
+
+                    <label for="branch">Choose a Branch:</label>
+                    <select id="branch" name="branch" required>
+                        <option value="">Select a Branch</option>
+                        <option value="cse">CSE</option>
+                        <option value="ai&ds">AI&DS</option>
+                        <option value="cst">CST</option>
+                        <option value="cs">CS</option>
+                        <option value="ai&ml">AI&ML</option>
+                    </select>
+
+                    <label for="year">Choose a Year:</label>
+                    <select id="year" name="year" required>
+                        <option value="">Select a year</option>
+                        <option value="1-1">1-1</option>
+                        <option value="1-2">1-2</option>
+                        <option value="2-1">2-1</option>
+                        <option value="2-2">2-2</option>
+                        <option value="3-1">3-1</option>
+                        <option value="3-2">3-2</option>
+                        <option value="4-1">4-1</option>
+                        <option value="4-2">4-2</option>
+                        
+                    </select>
+                    <label for="phno">Phone Number :</label>
+                    <input type="text" id="phno" name="phno" required>
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <button type="submit">Submit</button>
+                    
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <script src="server.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examination</title>
+    <link rel="stylesheet" href="exam.css">
+</head>
+<body>
+    <div class="container">
+        <header class="top-bar">
+            <h1>Online Exam Center</h1>
+
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <form id="examForm" action="/submit_exam" method="post">
+                <input type="hidden" name="email" id="emailField">
+                <div id="timer">Time left: 3:00:00</div>
+                <div class="question">
+                    <h3>Question 1: What is 2 + 2 ?</h3>
+                    <input type="radio" id="q1a1" name="q1" value="3">
+                    <label for="q1a1">3</label><br>
+                    <input type="radio" id="q1a2" name="q1" value="4">
+                    <label for="q1a2">4</label><br>
+                    <input type="radio" id="q1a3" name="q1" value="5">
+                    <label for="q1a3">5</label>
+                </div>
+
+                <div class="question">
+                    <h3>Question 2: What is the capital of France?</h3>
+                    <input type="radio" id="q2a1" name="q2" value="Berlin">
+                    <label for="q2a1">Berlin</label><br>
+                    <input type="radio" id="q2a2" name="q2" value="Paris">
+                    <label for="q2a2">Paris</label><br>
+                    <input type="radio" id="q2a3" name="q2" value="Madrid">
+                    <label for="q2a3">Madrid</label>
+                </div>
+
+                <button type="submit" class="btn">Submit Answers</button>
+                <div id="scoreDisplay" style="display: none;">
+                    <h2>Your Score: <span id="scoreValue">0</span></h2>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the email from the query string
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+
+            if (email) {
+                document.getElementById('emailField').value = email;
+            } else {
+                console.error('Email query parameter is missing.');
+            }
+
+            const timerElement = document.getElementById('timer');
+            let timeLeft = 3 * 60 * 60; // 3 hours in seconds
+
+            function updateTimer() {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `Time left: ${hours}:${minutes}:${seconds}`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('examForm').submit();
+                }
+            }
+
+            const timerInterval = setInterval(updateTimer, 1000);
+
+            document.getElementById('examForm').addEventListener('submit', function(event) {
+                event.preventDefault();  // Prevent  default  form  submissiom
+
+                const formData = new FormData(this);
+
+                console.log('Email:', formData.get('email'));
+                console.log('Question 1:', formData.get('q1'));
+                console.log('Question 2:', formData.get('q2'));
+
+                fetch('/submit_exam', {
+                    method: 'POST', 
+                    body: new URLSearchParams(formData) // Correctly format data for URL-encoded middleware
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Show the score
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                    } else {
+                        document.getElementById('scoreValue').textContent = data.marks;
+                        document.getElementById('scoreDisplay').style.display = 'block'; // Show score
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+                clearInterval(timerInterval); // Stop the timer when the form is submitted
+            });
+        });
+    </script>
+</body>
+</html>
